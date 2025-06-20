@@ -3,22 +3,48 @@ Object subclass: #Simulacion
     classVariableNames: ''
     package: 'GuerraHormigas'
 
-Simulacion class >> crearPorDefecto "creador de instancia"
-    ^ self new mundo
+Simulacion class >> crear "creador de instancia"
+    ^ self new inicializar
 
-Simulacion >> inicializarConAlto: unAlto ancho: unAncho "inicializador"
-    mundo := Mundo crearConAlto: unAlto ancho: unAncho.
+Simulacion >> inicializar
+    mundo := nil.
     nroTurno := 0
-
-Simulacion >> inicializarPorDefecto "inicializador"
-    self inicializarConAlto: 20 ancho: 20
 
 Simulacion >> ejecutarTurno "ejecucion"
     mundo ejecutarTurno.
     nroTurno := nroTurno + 1
 
+Simulacion >> crearMundoPorDefecto
+    self crearMundo: Configuracion default
+
+Simulacion >> crearMundo: unaConf
+    | colonias fuentes |
+    colonias := unaConf colonias.
+    fuentes := unaConf fuentes.
+    mundo := Mundo crearConAlto: unaConf alto ancho: unaConf ancho.
+    (0 to: (colonias size / 6) - 1) do: [ :j | | i nuevaCol |
+        "posx posy comida guerreras obreras exploradoras"
+        i := j*6 + 1.
+        nuevaCol := mundo crearColonia: (Point x: (colonias at: i) y: (colonias at: i+1)) cantidadComida: (colonias at: i+2).
+        (1 to: (colonias at: i+3)) do: [ :_ |
+            nuevaCol crearHormiga: Guerrera.
+        ].
+        (1 to: (colonias at: i+4)) do: [ :_ |
+            nuevaCol crearHormiga: Obrera.
+        ].
+        (1 to: (colonias at: i+5)) do: [ :_ |
+            nuevaCol crearHormiga: Exploradora.
+        ].
+    ].
+
+    (0 to: (fuentes size / 3) - 1) do: [ :j | | i nuevaCol |
+        "posx posy comida"
+        i := j*3 + 1.
+        nuevaCol := mundo crearFuenteComida: (Point x: (fuentes at: i) y: (fuentes at: i+1)) cantidadComida: (fuentes at: i+2).
+    ].
+
 Simulacion >> crearColonia: unPunto cantidadComida: unaCantidad
-    mundo crearFuenteComida: unPunto cantidadComida: unaCantidad
+    mundo crearColonia: unPunto cantidadComida: unaCantidad
 
 Simulacion >> crearFuenteComida: unPunto cantidadComida: unaCantidad
     mundo crearFuenteComida: unPunto cantidadComida: unaCantidad

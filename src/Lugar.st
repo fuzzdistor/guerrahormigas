@@ -1,10 +1,17 @@
 Object subclass: #Lugar
-    instanceVariableNames: 'posicion'
+    instanceVariableNames: 'posicion cantidadComida'
     classVariableNames: ''
     package: 'GuerraHormigas'
 
-Lugar >> inicializar: unaCoord "incializador"
-    posicion := unaCoord
+Lugar >> inicializar: unaPosicion comida: cantComida "incializador"
+    posicion := unaPosicion.
+    cantidadComida := cantComida.
 
 Lugar >> posicion "observador"
     ^ posicion
+
+Lugar >> cantidadComida "observador"
+    ^ cantidadComida
+
+Lugar >> marcadoParaDestruir
+    ^ cantidadComida > 0

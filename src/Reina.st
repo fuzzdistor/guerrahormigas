@@ -6,12 +6,13 @@ Object subclass: #Reina
 Reina class >> inicializarClase: comidaMax
     COMIDA_MAX := comidaMax
 
+Reina class >> inicializarClaseDefault
+    self class inicializarClase: 3
+
 Reina class >> crear
-    ^ self new
+    ^ self new inicializar
 
 Reina >> inicializar
     comidaConsumida := 0.
     colaObjetivos := OrderedCollection new.
     historialObjetivos := OrderedCollection new.
-
-    

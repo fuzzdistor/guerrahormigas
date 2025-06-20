@@ -1,10 +1,10 @@
-Object subclass: #Exploradora
+Hormiga subclass: #Exploradora
     instanceVariableNames: 'mensaje historialMensajes recorridoAColonia'
     classVariableNames: ''
     package: 'GuerraHormigas'
 
-Exploradora class >> crear
-    ^ self new inicializar
+Exploradora class >> crear: unaPosicion
+    ^ self new inicializarConPosicion: unaPosicion
 
-Exploradora >> inicializar
-    super inicializar
+Exploradora >> inicializarConPosicion: unaPosicion
+    super inicializarConPosicion: unaPosicion

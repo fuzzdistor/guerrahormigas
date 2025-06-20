@@ -3,8 +3,8 @@ Hormiga subclass: #Guerrera
     classVariableNames: ''
     package: 'GuerraHormigas'
 
-Guerrera class >> crear: id
-    ^ self new inicializar: id
+Guerrera class >> crear: unaPosicion
+    ^ self new inicializarConPosicion: unaPosicion
 
-Guerrera >> inicializar: id
-    super inicializar: id
+Guerrera >> inicializarConPosicion: unaPosicion
+    super inicializarConPosicion: unaPosicion

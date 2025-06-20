@@ -1,16 +1,13 @@
 Lugar subclass: #FuenteComida
-    instanceVariableNames: 'cantComida'
+    instanceVariableNames: ''
     classVariableNames: ''
     package: 'GuerraHormigas'
 
-FuenteComida class >> crear: unaCoord comida: unaCantidad"constructor"
-    | fuente |
-    fuente := self new 
-    fuente inicializar: unaCoord comida: unaCantidad
-    
-FuenteComida >> inicializar: unaCoord comida: unaCantidad
-    super inicializar: unaCoord
-    cantComida: unaCantidad
+FuenteComida class >> crear: unaPosicion comida: cantComida "constructor"
+    ^ self new inicializar: unaPosicion comida: cantComida
+
+FuenteComida >> inicializar: unaPosicion comida: unaCantidad
+    super inicializar: unaPosicion comida: unaCantidad.
 
 FuenteComida class >> crearDe: unaColonia
     ^ self crear: (unaColonia posicion) comida: (unaColonia comida)
