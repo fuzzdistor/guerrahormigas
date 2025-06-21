@@ -1,5 +1,5 @@
 Object subclass: #GestorBatallas
-    instanceVariableNames: 'diccionarioBatallas diccionarioBotin'
+    instanceVariableNames: 'dicBatallas dicBotin'
     classVariableNames: ''
     package: 'GuerraHormigas'
 
@@ -7,12 +7,12 @@ GestorBatallas class >> crear
     ^ self new inicializar
 
 GestorBatallas >> inicializar
-    diccionarioBatallas := Dictionary new.
-    diccionarioBotin := Dictionary new.
+    dicBatallas := Dictionary new.
+    dicBotin := Dictionary new.
 
 GestorBatallas >> registrarAtacante: coloniaAtacante unidad: unaHormiga coloniaDef: coloniaDefensora
     | batalla |
-    batalla := diccionarioBatallas 
+    batalla := dicBatallas 
         at: coloniaAtacante 
         ifAbsentPut: [ 
             Batalla crear: coloniaAtacante defensora: coloniaDefensora 
@@ -21,25 +21,25 @@ GestorBatallas >> registrarAtacante: coloniaAtacante unidad: unaHormiga coloniaD
 
 GestorBatallas >> ejecutarTurno
     " librar todas las batallas registradas "
-    diccionarioBatallas values do: [ :batalla |
+    dicBatallas values do: [ :batalla |
         batalla librarBatalla
         ].
     " guardar los botines de las batallas ganadas por los atacantes "
-    diccionarioBatallas values do: [ :batalla |
+    dicBatallas values do: [ :batalla |
         (batalla enCurso) ifFalse: [
             (batalla victoriaAtacante) ifTrue: [
-                diccionarioBotin add: batalla getAtacante -> botin.
+                dicBotin add: (batalla getAtacante) -> (batalla getBotin).
             ].
         ].
     ].
     " eliminar las batallas que terminaron "
-    diccionarioBatallas select: [ :aso | 
+    dicBatallas select: [ :aso | 
         | batalla |
         batalla := aso value.
         batalla enCurso
     ]
     " eliminar botines de colonias que murieron antes de reclamarlo "
-    diccionarioBotin select: [ :aso |
+    dicBotin select: [ :aso |
         | atacante |
         atacante := aso key.
         atacante destruido not
@@ -47,7 +47,7 @@ GestorBatallas >> ejecutarTurno
 
 GestorBatallas >> solicitarBotin: unaColonia
     | botin |
-    botin := diccionarioBotin at: unaColonia.
-    diccionarioBotin removeKey: unaColonia.
+    botin := dicBotin at: unaColonia.
+    dicBotin removeKey: unaColonia.
     ^ botin
 

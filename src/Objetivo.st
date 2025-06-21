@@ -1,36 +1,33 @@
 Object subclass: #Objetivo
-    instanceVariableNames: 'posicion recorrido'
+    instanceVariableNames: 'recorrido tipoLugar'
     classVariableNames: ''
     package: 'GuerraHormigas'
 
-Objetivo class >> crear: unaPosicion
-    ^ self new inicializar: unaPosicion
+Objetivo class >> crear: unTipoLugar
+    ^ self new inicializar: unTipoLugar
     
-Objetivo >> inicializar: unaPosicion
-    posicion := unaPosicion.
+Objetivo >> inicializar: unTipoLugar
+    tipoLugar := unTipoLugar.
     recorrido := OrderedCollection new.
 
-Objetivo >> getPosicion
-    ^ posicion
+Objetivo >> getTipoLugar
+    ^ tipoLugar
+
+Objetivo >> getDestino
+    ^ recorrido last
 
 Objetivo >> getRecorrido
     ^ recorrido
 
 Objetivo >> pasoSiguiente: unaPosicion
-    | i posicion |
+    | i |
     i := recorrido indexOf: unaPosicion.
-    ((i + 1) < recorrido size) ifTrue: [
-        i := i + 1.
-    ].
-    ^ recorrido at: i
+    ^ recorrido at: ((i + 1) min: recorrido size)
 
 Objetivo >> pasoAnterior: unaPosicion
     | i |
     i := recorrido indexOf: unaPosicion.
-    ((i - 1) > 1) ifTrue: [
-        i := i - 1.
-    ].
-    ^ recorrido at: i
+    ^ recorrido at: ((i - 1) max: 1)
 
 Objetivo >> enDestino: unaPosicion
     ^ posicion = unaPosicion

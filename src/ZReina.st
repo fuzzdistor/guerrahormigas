@@ -59,6 +59,9 @@ Reina >> ejecutarTurno: unMundo colonia: unaColonia
                 unaColonia agregarHormiga: hormiga.
             ].
         ].
-        self procesarObjetivos.
+        self procesarObjetivos: unMundo.
     ].
 
+
+Reina >> procesarObjetivos: unMundo
+    
