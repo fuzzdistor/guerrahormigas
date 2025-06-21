@@ -1,5 +1,5 @@
 Object subclass: #Reina
-    instanceVariableNames: 'comidaConsumida colaObjetivos historialObjetivos'
+    instanceVariableNames: 'comidaConsumida colaObjetivos historialObjetivos estado'
     classVariableNames: 'COMIDA_MAX'
     package: 'GuerraHormigas'
 
@@ -7,7 +7,7 @@ Reina class >> inicializarClase: comidaMax
     COMIDA_MAX := comidaMax
 
 Reina class >> inicializarClaseDefault
-    self class inicializarClase: 3
+    self inicializarClase: 3
 
 Reina class >> crear
     ^ self new inicializar

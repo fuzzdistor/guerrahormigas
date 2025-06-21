@@ -40,8 +40,8 @@ Mundo >> ejecutarTurno
         ].
 
     "destruir lugares sin comida"
-    colLugares := colLugares difference: colLugares select: [ :l |
-        l marcadoParaDestruccion
+    colLugares := colLugares select: [ :l |
+        l marcadoParaDestruccion not
         ].
 
     "hacer un turno de batallas"

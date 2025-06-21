@@ -1,5 +1,5 @@
 Object subclass: #Hormiga
-    instanceVariableNames: 'identificador posicion objetivo'
+    instanceVariableNames: 'identificador posicion objetivo estado'
     classVariableNames: 'idActual'
     package: 'GuerraHormigas'
 
@@ -18,7 +18,8 @@ Hormiga >> inicializar "inicializador de instancia"
 Hormiga >> inicializarConPosicion: unPunto "inicializador de instancia"
     identificador := self class generarId.
     posicion := unPunto.
-    objetivo := nil
+    objetivo := nil.
+    estado := 'inactiva'
 
 Hormiga >> objetivo "observador"
     ^ objetivo
@@ -28,3 +29,18 @@ Hormiga >> posicion "observador"
 
 Hormiga >> id "observador"
     ^ identificador
+
+Hormiga >> estaViva
+    ^ estado ~= 'muerta'
+
+Hormiga >> estaMuerta
+    ^ estado = 'muerta'
+
+Hormiga >> estaAvanzando
+    ^ estado = 'avanzando'
+
+Hormiga >> estaVolviendo
+    ^ estado = 'volviendo'
+
+Hormiga >> estaInactiva
+    ^ estado = 'inactiva'

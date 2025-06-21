@@ -14,7 +14,7 @@ Simulacion >> ejecutarTurno "ejecucion"
     mundo ejecutarTurno.
     nroTurno := nroTurno + 1
 
-Simulacion >> crearMundoPorDefecto
+Simulacion >> crearMundoDefault
     self crearMundo: Configuracion default
 
 Simulacion >> crearMundo: unaConf

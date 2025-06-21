@@ -34,3 +34,6 @@ Colonia >> crearHormiga: unTipo
     hormiga := unTipo crear: self posicion.
     colHormigas add: hormiga.
     ^ hormiga
+
+Colonia >> limpiarHormigasMuertas
+    colHormigas := colHormigas select: [:h | h estaViva ]
