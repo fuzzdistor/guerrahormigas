@@ -15,25 +15,19 @@ Colonia >> atacando
     ^ (colHormigas detect: [ :h | 
         (h isMemberOf: Guerrera) and: (h objetivo notNil) ] ifNone: nil) notNil 
 
-Colonia >> crearHormiga "instanciador recurso"
-    | chance |
-    " está comprobado que esto da las chances correctas"
-    chance := (0 to: 9) atRandom.
-    (chance < 3) ifTrue: [
-    	self crearHormiga: Obrera. 
-    ] ifFalse: [ (chance < 5) ifTrue: [ 
-    		self crearHormiga: Exploradora.
-    	] ifFalse: [(chance < 8) ifTrue: [ 
-                self crearHormiga: Guerrera.
-    		]
-    	]
-    ].
-
-Colonia >> crearHormiga: unTipo
-    | hormiga |
-    hormiga := unTipo crear: self posicion.
-    colHormigas add: hormiga.
-    ^ hormiga
+Colonia >> agregarHormiga: unaHormiga "instanciador recurso"
+    unaHormiga setPosicion: self posicion.
+    colHormigas add: unaHormiga
 
 Colonia >> limpiarHormigasMuertas
-    colHormigas := colHormigas select: [:h | h estaViva ]
+    colHormigas := colHormigas select: [ :h | h estaViva ]
+
+Colonia >> destruido
+    " herencia por reemplazo ya que la condición de destrucción cambia "
+    ^ reina estaMuerta
+
+Colonia >> almacenarAlimento: unaCantidad
+    cantidadComida := cantidadComida + unaCantidad
+
+Colonia >> getReina
+    ^ reina

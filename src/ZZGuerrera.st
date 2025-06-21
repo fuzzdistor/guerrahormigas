@@ -1,7 +1,10 @@
-Hormiga subclass: #Guerrera
+Trabajadora subclass: #Guerrera
     instanceVariableNames: 'turnosHastaEntrenada vida resistencia poderGolpe'
     classVariableNames: ''
     package: 'GuerraHormigas'
+
+Guerrera class >> crear
+    ^ self new inicializarConPosicion: Point new.
 
 Guerrera class >> crear: unaPosicion
     ^ self new inicializarConPosicion: unaPosicion
@@ -22,7 +25,7 @@ Guerrera >> estaDefendiendo
 Guerrera >> ejecutarTurno: unMundo colonia: unaColonia
     (turnosHastaEntrenada > 0) ifTrue: [
         turnosHastaEntrenada := turnosHastaEntrenada - 1.
-    ]
+    ].
     (objetivo isNil) ifTrue: [
         self comer: unaColonia
     ] ifFalse: [
@@ -41,5 +44,6 @@ Guerrera >> ejecutarTurno: unMundo colonia: unaColonia
                 "TODO"
             ].
         "TODO"
+        ].
     ]
     "TODO"

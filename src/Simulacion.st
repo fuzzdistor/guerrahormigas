@@ -22,18 +22,19 @@ Simulacion >> crearMundo: unaConf
     colonias := unaConf colonias.
     fuentes := unaConf fuentes.
     mundo := Mundo crearConAlto: unaConf alto ancho: unaConf ancho.
-    (0 to: (colonias size / 6) - 1) do: [ :j | | i nuevaCol |
+    (0 to: (colonias size / 6) - 1) do: [ :j | | i nuevaCol reina |
         "posx posy comida guerreras obreras exploradoras"
         i := j*6 + 1.
         nuevaCol := mundo crearColonia: (Point x: (colonias at: i) y: (colonias at: i+1)) cantidadComida: (colonias at: i+2).
+        reina  := nuevaCol getReina.
         (1 to: (colonias at: i+3)) do: [ :_ |
-            nuevaCol crearHormiga: Guerrera.
+            nuevaCol agregarHormiga: (reina crearHormiga: Guerrera).
         ].
         (1 to: (colonias at: i+4)) do: [ :_ |
-            nuevaCol crearHormiga: Obrera.
+            nuevaCol agregarHormiga: (reina crearHormiga: Obrera).
         ].
         (1 to: (colonias at: i+5)) do: [ :_ |
-            nuevaCol crearHormiga: Exploradora.
+            nuevaCol agregarHormiga: (reina crearHormiga: Exploradora).
         ].
     ].
 

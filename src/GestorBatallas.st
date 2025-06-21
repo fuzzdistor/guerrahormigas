@@ -20,16 +20,30 @@ GestorBatallas >> registrarAtacante: coloniaAtacante unidad: unaHormiga coloniaD
     batalla registrarAtacante: unaHormiga
 
 GestorBatallas >> ejecutarTurno
+    " librar todas las batallas registradas "
     diccionarioBatallas values do: [ :batalla |
         batalla librarBatalla
         ].
+    " guardar los botines de las batallas ganadas por los atacantes "
     diccionarioBatallas values do: [ :batalla |
         (batalla enCurso) ifFalse: [
             (batalla victoriaAtacante) ifTrue: [
-                diccionarioBotin put: batalla getAtacante -> botin.
+                diccionarioBotin add: batalla getAtacante -> botin.
             ].
         ].
     ].
+    " eliminar las batallas que terminaron "
+    diccionarioBatallas select: [ :aso | 
+        | batalla |
+        batalla := aso value.
+        batalla enCurso
+    ]
+    " eliminar botines de colonias que murieron antes de reclamarlo "
+    diccionarioBotin select: [ :aso |
+        | atacante |
+        atacante := aso key.
+        atacante destruido not
+    ]
 
 GestorBatallas >> solicitarBotin: unaColonia
     | botin |
@@ -37,5 +51,3 @@ GestorBatallas >> solicitarBotin: unaColonia
     diccionarioBotin removeKey: unaColonia.
     ^ botin
 
-            
-            

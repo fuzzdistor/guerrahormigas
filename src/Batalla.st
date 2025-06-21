@@ -14,37 +14,44 @@ Batalla >> inicializarConAtacante: coloniaAtacante defensora: coloniaDefensora
 
 Batalla class >> librarEncuentro
     | a b |
+    " pelea entre dos contrincantes "
+    " ambos tiran dados d100 y el mayor gana o hay empate "
+    " el resultado es 1 si gana a, -1 si gana b, 0 si hay empate "
     a := 0 to: 99 atRandom.
     d := 0 to: 99 atRandom.
     ^ (a - d) sign
 
 Batalla >> librarBatalla
     | unidadesDefensoras i j |
+    " manda a pelear las atacantes que fueron registradas contra las defensoras
+    disponibles de la colonia defensora hasta que todas las atacantes pelean
+    o todas las defensoras de la colonia defensora pierden y también su reina "
     i := 1.
     j := 1.
     unidadesDefensoras := defensora defensasDisponibles.
-    [ :hormigaAtancante | | res |
+    [   
+        | res |
         res := Batalla librarEncuentro.
-        (j <= unidadesDefensoras size) ifTrue: [
-            (res > 0) ifTrue: [ 
+        " si la atacante perdio "
+        (res < 0) ifTrue: [
+            (unidadesAtacantes at: i) setEstado: 'muerta'.
+        ].
+        " si la defensora perdio "
+        (res > 0) ifTrue: [ 
+            (j <= unidadesDefensoras size) ifTrue: [
+                " si hay defensoras "
                 (unidadesDefensoras at: j) setEstado: 'muerta'.
                 j + 1 
-            ].
-            (res < 0) ifTrue: [
-                (unidadesAtacantes at: i) setEstado: 'muerta'.
-            ].
-        ] ifFalse: [
-            (res > 0) ifTrue: [
+            ] ifFalse: [
+                " si solo queda la reina "
                 defensora getReina setEstado: 'muerta'.
-            ].
-            (res < 0) ifTrue: [
-                (unidadesAtacantes at: i) setEstado: 'muerta'.
             ].
         ].
         i := i + 1.
-    ] doWhileTrue: [ defensora getReina estaViva and: i < unidadesAtacantes size ].
+    ] doWhileTrue: [ (defensora destruida not) and: i <= unidadesAtacantes size ].
+
     " elimino de atacantes las hormigas que murieron "
-    unidadesAtacantes := unidadesAtacantes select: [:h | h estaViva ].
+    unidadesAtacantes := unidadesAtacantes select: [ :h | h estaViva ].
     " si murio la reina enemiga ganan las atacantes "
     (defensora reina estaViva) ifFalse: [ resultado = 'atacante' ].
     " si no quedan hormigas atacantes ganan las defensoras "
@@ -54,9 +61,6 @@ Batalla >> librarBatalla
 
 Batalla >> enCurso
     ^ resultado isNil
-
-Batalla >> getResultado
-    ^ resultado
 
 Batalla >> victoriaAtacante
     ^ resultado = 'atacante'
@@ -75,3 +79,4 @@ Batalla >> getAtacante
 
 Batalla >> registrarAtacante: unaHormiga
     unidadesAtacantes add: unaHormiga
+

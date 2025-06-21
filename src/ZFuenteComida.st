@@ -8,6 +8,3 @@ FuenteComida class >> crear: unaPosicion comida: cantComida "constructor"
 
 FuenteComida >> inicializar: unaPosicion comida: unaCantidad
     super inicializar: unaPosicion comida: unaCantidad.
-
-FuenteComida class >> crearDe: unaColonia
-    ^ self crear: (unaColonia posicion) comida: (unaColonia comida)

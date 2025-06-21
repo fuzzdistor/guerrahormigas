@@ -17,11 +17,21 @@ Objetivo >> getRecorrido
     ^ recorrido
 
 Objetivo >> pasoSiguiente: unaPosicion
-    | i |
+    | i posicion |
     i := recorrido indexOf: unaPosicion.
-    ^ recorrido at: i+1
+    ((i + 1) < recorrido size) ifTrue: [
+        i := i + 1.
+    ].
+    ^ recorrido at: i
 
 Objetivo >> pasoAnterior: unaPosicion
     | i |
     i := recorrido indexOf: unaPosicion.
-    ^ recorrido at: i-1
+    ((i - 1) > 1) ifTrue: [
+        i := i - 1.
+    ].
+    ^ recorrido at: i
+
+Objetivo >> enDestino: unaPosicion
+    ^ posicion = unaPosicion
+

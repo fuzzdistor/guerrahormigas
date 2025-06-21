@@ -13,5 +13,16 @@ Lugar >> posicion "observador"
 Lugar >> cantidadComida "observador"
     ^ cantidadComida
 
-Lugar >> marcadoParaDestruir
+Lugar >> destruido
     ^ cantidadComida > 0
+
+Lugar >> entregarRacion: unaCantidad
+    | comidaEntregada |
+    (unaCantidad <= cantidadComida) ifTrue: [
+        comidaEntregada := unaCantidad.
+        cantidadComida := cantidadComida - unaCantidad.
+    ] ifFalse: [
+        comidaEntregada := cantidadComida.
+        cantidadComida := 0.
+    ].
+    ^ cantidadComida.
