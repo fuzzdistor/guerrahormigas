@@ -20,3 +20,6 @@ Trabajadora >> setPosicion: unaPosicion
 
 Trabajadora >> setLugar: unLugar
     self setPosicion: unLugar posicion.
+
+Trabajadora >> setObjetivo: unObjetivo
+    objetivo := unObjetivo.

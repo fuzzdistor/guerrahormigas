@@ -16,6 +16,12 @@ Guerrera >> inicializar
 Guerrera >> estaAtacando
     ^ estado = 'atacando'
 
+"
+    (turnosHastaEntrenada > 0) ifTrue: [
+        turnosHastaEntrenada := turnosHastaEntrenada - 1.
+    ].
+"
+
 Guerrera >> ejecutarTurno: unMundo colonia: unaColonia
     (turnosHastaEntrenada > 0) ifTrue: [
         turnosHastaEntrenada := turnosHastaEntrenada - 1.

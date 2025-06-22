@@ -25,10 +25,25 @@ Exploradora class >> movidaAt: indice
 
 Exploradora >> ejecutarTurno: unMundo colonia: unaColonia
     movimientos := Exploradora getMovPorTurno.
-    (self estaAvanzando) ifTrue: [
-        self explorar: unMundo.
-    ]
-    "TODO hacer que la hormiga vuelva y guarde sus pasos en recorrido"
+    [
+        (self estaAvanzando) ifTrue: [
+            self explorar: unMundo colonia: unaColonia.
+        ].
+        (self estaVolviendo) ifTrue: [
+            [ 
+                self volver.
+                movimientos := movimientos - 1.
+                (objetivo enPartida: posicion) ifTrue: [
+                    (unaColonia getReina) recibirObjetivo: objetivo.
+                    self setAvanzando.
+                    objetivo := nil.
+                ].
+            ] doWhileTrue: [ movimientos >= 1 and: self estaVolviendo ].
+        ].
+    ] doWhileTrue: [ movimientos >= 1 ]
+
+Exploradora >> volver
+    posicion := objetivo pasoAnterior: posicion.
 
 Exploradora >> previamenteVisitado: unaPosicion
     | res |
@@ -36,21 +51,24 @@ Exploradora >> previamenteVisitado: unaPosicion
         l posicion = unaPosicion ] ifNone: nil.
     ^ res isNotNil
     
-Exploradora >> explorar: unMundo
+Exploradora >> explorar: unMundo colonia: unaColonia
     | lugar visitado |
     [ 
-        self mover: unMundo.
+        self caminar: unMundo.
         lugar := unMundo lugarEn: posicion.
         visitado := self previamenteVisitado: posicion.
         movimientos := movimientos - 1.
         " hacer mientras tenga movimientos disponibles y el lugar en el que estoy es nil o ya lo visité "
-    ] doWhileTrue: [ movimientos >= 1 and: (lugar isNil or: visitado) ].
-    (lugar isNotNil and: (visitado not)) ifTrue: [
-        self crearObjetivo: lugar class.
+    ] doWhileTrue: [ (movimientos >= 1) and: (lugar isNil or: visitado) ].
+    ((lugar isNotNil) and: (visitado not)) ifTrue: [
+        objetivo := self crearObjetivo: (lugar class).
+        self calcularRecorrido: (unaColonia posicion) destino: posicion.
+        self setVolviendo.
     ].
 
-Exploradora >> mover: unMundo
+Exploradora >> caminar: unMundo
     | paso |
+    " elegir un paso válido que no me haga retroceder ni irme de los límites del mundo "
     [   | rand |
         rand := (1 to: 4) atRandom.
         paso := Exploradora movidaAt: rand.
@@ -63,7 +81,26 @@ Exploradora >> setLugar: unLugar
     super setLugar: unLugar.
     historialLugares add: unLugar
 
+Exploradora >> calcularRecorrido: unaPartida destino: unDestino
+    | recorrido unPunto |
+    unPunto := unaPartida.
+    recorrido := objetivo getRecorrido.
+    recorrido add: unPunto.
+    [ 
+        | minDist sigPaso |
+        minDist := unPunto squaredDistanceTo: unDestino.
+        (unPunto fourNeighbors) do: [ :unPaso | 
+            | dist |
+            dist := unPaso squaredDistanceTo: unDestino.
+            (dist < minDist) ifTrue: [
+                sigPaso := unPaso.
+                minDist := dist.
+            ].
+        ].
+        recorrido add: sigPaso.
+        unPunto := sigPaso.
+    ] doWhileTrue: [ unPunto ~= unDestino ]
+    
 Exploradora >> crearObjetivo: unTipo
-    Test log: unTipo name.
     ^ Objetivo crear: unTipo
     

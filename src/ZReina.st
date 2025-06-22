@@ -21,6 +21,12 @@ Reina >> inicializar
     historialObjetivos := OrderedCollection new.
     estado := 'inactiva'
 
+Reina >> recibirObjetivo: unObjetivo
+    " si no lo encuentro lo añado "
+    colaObjetivos detect: [ :o |
+        o getDestino = unObjetivo getDestino ]
+        ifNone: [ colaObjetivos add: unObjetivo ]
+
 Reina >> crearTrabajadora "instanciador recurso"
     | chance hormiga |
     " está comprobado que esto da las chances correctas"

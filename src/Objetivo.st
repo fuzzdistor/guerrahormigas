@@ -16,6 +16,9 @@ Objetivo >> getTipoLugar
 Objetivo >> getDestino
     ^ recorrido last
 
+Objetivo >> getPartida
+    ^ recorrido at: 1
+
 Objetivo >> getRecorrido
     ^ recorrido
 
@@ -30,5 +33,7 @@ Objetivo >> pasoAnterior: unaPosicion
     ^ recorrido at: ((i - 1) max: 1)
 
 Objetivo >> enDestino: unaPosicion
-    ^ posicion = unaPosicion
+    ^ self getDestino = unaPosicion
 
+Objetivo >> enPartida: unaPosicion
+    ^ self getPartida = unaPosicion
