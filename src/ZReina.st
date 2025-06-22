@@ -62,7 +62,6 @@ Reina >> ejecutarTurno: unMundo colonia: unaColonia
             hormiga := self crearTrabajadora.
             comidaConsumida = 0.
             (hormiga isNotNil) ifTrue: [
-                hormiga setLugar: unaColonia.
                 unaColonia agregarHormiga: hormiga.
             ].
         ].

@@ -17,6 +17,7 @@ Colonia >> atacando
 
 Colonia >> agregarHormiga: unaHormiga "instanciador recurso"
     unaHormiga setPosicion: self posicion.
+    unaHormiga setLugar: self.
     colHormigas add: unaHormiga
 
 Colonia >> limpiarHormigasMuertas
