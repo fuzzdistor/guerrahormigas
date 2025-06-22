@@ -4,13 +4,10 @@ Trabajadora subclass: #Obrera
     package: 'GuerraHormigas'
 
 Obrera class >> crear
-    ^ self new inicializarConPosicion: Point new.
+    ^ self new inicializar
 
-Obrera class >> crear: unaPosicion
-    ^ self new inicializarConPosicion: unaPosicion
-
-Obrera >> inicializarConPosicion: unaPosicion
-    super inicializarConPosicion: unaPosicion.
+Obrera >> inicializar
+    super inicializar.
     comidaCarga := 0
 
 Obrera >> ejecutarTurno: unMundo colonia: unaColonia

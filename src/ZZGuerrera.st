@@ -4,13 +4,10 @@ Trabajadora subclass: #Guerrera
     package: 'GuerraHormigas'
 
 Guerrera class >> crear
-    ^ self new inicializarConPosicion: Point new.
+    ^ self new inicializar
 
-Guerrera class >> crear: unaPosicion
-    ^ self new inicializarConPosicion: unaPosicion
-
-Guerrera >> inicializarConPosicion: unaPosicion
-    super inicializarConPosicion: unaPosicion.
+Guerrera >> inicializar
+    super inicializar.
     turnosHastaEntrenada := 2.
     vida := 100.
     resistencia := 101.
@@ -18,9 +15,6 @@ Guerrera >> inicializarConPosicion: unaPosicion
 
 Guerrera >> estaAtacando
     ^ estado = 'atacando'
-
-Guerrera >> estaDefendiendo
-    ^ estado = 'defendiendo'
 
 Guerrera >> ejecutarTurno: unMundo colonia: unaColonia
     (turnosHastaEntrenada > 0) ifTrue: [

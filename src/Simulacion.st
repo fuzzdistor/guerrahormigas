@@ -28,13 +28,13 @@ Simulacion >> crearMundo: unaConf
         nuevaCol := mundo crearColonia: (Point x: (colonias at: i) y: (colonias at: i+1)) cantidadComida: (colonias at: i+2).
         reina  := nuevaCol getReina.
         (1 to: (colonias at: i+3)) do: [ :_ |
-            nuevaCol agregarHormiga: (reina crearHormiga: Guerrera).
+            nuevaCol agregarHormiga: (reina crearTrabajadora: Guerrera).
         ].
         (1 to: (colonias at: i+4)) do: [ :_ |
-            nuevaCol agregarHormiga: (reina crearHormiga: Obrera).
+            nuevaCol agregarHormiga: (reina crearTrabajadora: Obrera).
         ].
         (1 to: (colonias at: i+5)) do: [ :_ |
-            nuevaCol agregarHormiga: (reina crearHormiga: Exploradora).
+            nuevaCol agregarHormiga: (reina crearTrabajadora: Exploradora).
         ].
     ].
 

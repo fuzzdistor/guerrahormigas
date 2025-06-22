@@ -14,7 +14,10 @@ Lugar >> cantidadComida "observador"
     ^ cantidadComida
 
 Lugar >> destruido
-    ^ cantidadComida > 0
+    ^ cantidadComida <= 0
+
+Lugar >> ejecutarTurno: unMundo
+    " base polimórfica "
 
 Lugar >> entregarRacion: unaCantidad
     | comidaEntregada |
@@ -25,4 +28,4 @@ Lugar >> entregarRacion: unaCantidad
         comidaEntregada := cantidadComida.
         cantidadComida := 0.
     ].
-    ^ cantidadComida.
+    ^ comidaEntregada.

@@ -3,7 +3,7 @@ Object subclass: #Hormiga
     classVariableNames: 'idActual'
     package: 'GuerraHormigas'
 
-Hormiga class >> inicializar "inicializador de clase"
+Hormiga class >> inicializarClase "inicializador de clase"
     idActual := 0
 
 Hormiga class >> generarId "identificador"
@@ -50,7 +50,7 @@ Hormiga >> setInactiva
     estado := 'inactiva'
 
 Hormiga >> comer: unaColonia
-    (unaColonia entregarRacion: 1) ifFalse: [
+    ((unaColonia entregarRacion: 1) = 1) ifFalse: [
         self setMuerta.
     ].
 

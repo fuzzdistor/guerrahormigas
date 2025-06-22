@@ -37,7 +37,7 @@ GestorBatallas >> ejecutarTurno
         | batalla |
         batalla := aso value.
         batalla enCurso
-    ]
+    ].
     " eliminar botines de colonias que murieron antes de reclamarlo "
     dicBotin select: [ :aso |
         | atacante |

@@ -21,6 +21,9 @@ Batalla class >> librarEncuentro
     d := 0 to: 99 atRandom.
     ^ (a - d) sign
 
+Batalla >> obtenerDefensoras
+    ^ defensora defensasDisponibles.
+    
 Batalla >> librarBatalla
     | unidadesDefensoras i j |
     " manda a pelear las atacantes que fueron registradas contra las defensoras
@@ -28,34 +31,45 @@ Batalla >> librarBatalla
     o todas las defensoras de la colonia defensora pierden y también su reina "
     i := 1.
     j := 1.
-    unidadesDefensoras := defensora defensasDisponibles.
-    [   
+    unidadesDefensoras := self obtenerDefensoras.
+    [
         | res |
         res := Batalla librarEncuentro.
         " si la atacante perdio "
         (res < 0) ifTrue: [
-            (unidadesAtacantes at: i) setEstado: 'muerta'.
+            self matar: (unidadesAtacantes at: i).
         ].
         " si la defensora perdio "
         (res > 0) ifTrue: [ 
             (j <= unidadesDefensoras size) ifTrue: [
                 " si hay defensoras "
-                (unidadesDefensoras at: j) setEstado: 'muerta'.
-                j + 1 
+                self matar: (unidadesDefensoras at: j).
+                j + 1.
             ] ifFalse: [
                 " si solo queda la reina "
-                defensora getReina setEstado: 'muerta'.
+                self matar: (defensora getReina).
             ].
         ].
         i := i + 1.
-    ] doWhileTrue: [ (defensora destruida not) and: i <= unidadesAtacantes size ].
+    ] doWhileTrue: [ (defensora destruido not) and: i <= unidadesAtacantes size ].
 
     " elimino de atacantes las hormigas que murieron "
-    unidadesAtacantes := unidadesAtacantes select: [ :h | h estaViva ].
+    self hacerLimpieza.
     " si murio la reina enemiga ganan las atacantes "
-    (defensora reina estaViva) ifFalse: [ resultado = 'atacante' ].
+    self computarResultado.
+
+Batalla >> matar: unaHormiga
+    unaHormiga setMuerta.
+
+Batalla >> computarResultado
+    (defensora destruido) ifTrue: [ resultado = 'atacante' ].
     " si no quedan hormigas atacantes ganan las defensoras "
     (unidadesAtacantes size = 0) ifTrue: [ resultado = 'defensora' ].
+
+Batalla >> hacerLimpieza
+    " limpiar atacantes "
+    unidadesAtacantes := unidadesAtacantes select: [ :h | h estaViva ].
+    " limpiar de colonias "
     defensora limpiarHormigasMuertas.
     atacante limpiarHormigasMuertas.
 

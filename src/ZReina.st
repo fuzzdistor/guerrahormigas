@@ -1,12 +1,12 @@
 Hormiga subclass: #Reina
-    instanceVariableNames: 'comidaConsumida colaObjetivos historialObjetivos estado'
+    instanceVariableNames: 'comidaConsumida colaObjetivos historialObjetivos'
     classVariableNames: 'COMIDA_MAX'
     package: 'GuerraHormigas'
 
 Reina class >> inicializarClase: comidaMax
     COMIDA_MAX := comidaMax
 
-Reina class >> inicializarClaseDefault
+Reina class >> inicializarClase
     self inicializarClase: 3
 
 Reina class >> crear
@@ -21,16 +21,16 @@ Reina >> inicializar
     historialObjetivos := OrderedCollection new.
     estado := 'inactiva'
 
-Reina >> crearHormiga "instanciador recurso"
+Reina >> crearTrabajadora "instanciador recurso"
     | chance hormiga |
     " está comprobado que esto da las chances correctas"
     chance := (0 to: 9) atRandom.
     (chance < 3) ifTrue: [
-    	hormiga := self crearHormiga: Obrera. 
+    	hormiga := self crearTrabajadora: Obrera. 
     ] ifFalse: [ (chance < 5) ifTrue: [ 
-    		hormiga := self crearHormiga: Exploradora.
+    		hormiga := self crearTrabajadora: Exploradora.
     	] ifFalse: [(chance < 8) ifTrue: [ 
-                hormiga := self crearHormiga: Guerrera.
+                hormiga := self crearTrabajadora: Guerrera.
     		]
     	]
     ].
@@ -43,7 +43,7 @@ Reina >> comer: unaColonia
         comidaConsumida := comidaConsumida + 1.
     ]
 
-Reina >> crearHormiga: unTipo 
+Reina >> crearTrabajadora: unTipo 
     | hormiga |
     hormiga := unTipo crear.
     ^ hormiga
@@ -53,9 +53,10 @@ Reina >> ejecutarTurno: unMundo colonia: unaColonia
     self comer: unaColonia.
     (self estaViva) ifTrue: [
         (comidaConsumida = Reina comidaMax) ifTrue: [
-            hormiga := self crearHormiga.
+            hormiga := self crearTrabajadora.
             comidaConsumida = 0.
             (hormiga isNotNil) ifTrue: [
+                hormiga setLugar: unaColonia.
                 unaColonia agregarHormiga: hormiga.
             ].
         ].
@@ -64,4 +65,5 @@ Reina >> ejecutarTurno: unMundo colonia: unaColonia
 
 
 Reina >> procesarObjetivos: unMundo
+    " TODO "
     

@@ -5,11 +5,8 @@ Hormiga subclass: #Trabajadora
 
 
 Trabajadora >> inicializar "inicializador de instancia"
-    self incializarConPosicion: Point new.
-
-Trabajadora >> inicializarConPosicion: unPunto "inicializador de instancia"
-    super inicializar
-    posicion := unPunto.
+    super inicializar.
+    posicion := nil.
     objetivo := nil.
 
 Trabajadora >> objetivo "observador"
@@ -21,6 +18,5 @@ Trabajadora >> posicion "observador"
 Trabajadora >> setPosicion: unaPosicion
     posicion := unaPosicion
 
-
-
-
+Trabajadora >> setLugar: unLugar
+    self setPosicion: unLugar posicion.

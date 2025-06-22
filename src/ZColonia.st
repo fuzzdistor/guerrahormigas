@@ -31,3 +31,11 @@ Colonia >> almacenarAlimento: unaCantidad
 
 Colonia >> getReina
     ^ reina
+
+Colonia >> ejecutarTurno: unMundo
+    " herencia por reemplazo "
+    reina ejecutarTurno: unMundo colonia: self.
+    (reina estaViva) ifTrue: [
+        colHormigas do: [ :h | h ejecutarTurno: unMundo colonia: self ].
+        colHormigas := colHormigas select: [ :h | h estaViva ].
+    ].

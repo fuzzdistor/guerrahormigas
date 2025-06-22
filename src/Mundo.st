@@ -1,5 +1,5 @@
 Object subclass: #Mundo
-    instanceVariableNames: 'ancho alto colLugares managerBatallas'
+    instanceVariableNames: 'ancho alto colLugares gestorBatallas'
     classVariableNames: ''
     package: 'GuerraHormigas'
 
@@ -9,7 +9,8 @@ Mundo class >> crearConAlto: unAlto ancho: unAncho "creador de instancia"
 Mundo >> inicializarConAlto: unAlto ancho: unAncho "inicializador de instancia"
     alto := unAlto.
     ancho := unAncho.
-    colLugares := OrderedCollection new
+    colLugares := OrderedCollection new.
+    gestorBatallas := GestorBatallas crear.
 
 Mundo >> lugarEn: unPunto "observador"
     ^ colLugares detect: [ :lugar | 
@@ -30,7 +31,6 @@ Mundo >> crearColonia: unPunto cantidadComida: unaCantidad
         colonia := Colonia crear: unPunto comida: unaCantidad.
         colLugares add: colonia.
         ].
-    colonia ifNil: [ self halt ].
     ^ colonia
 
 Mundo >> ejecutarTurno
@@ -41,8 +41,16 @@ Mundo >> ejecutarTurno
 
     "destruir lugares sin comida"
     colLugares := colLugares select: [ :l |
-        l marcadoParaDestruccion not
+        l destruido not
         ].
 
     "hacer un turno de batallas"
-    managerBatallas ejecutarTurno
+    gestorBatallas ejecutarTurno.
+
+    colLugares := colLugares select: [ :l |
+        l destruido not
+        ].
+
+Mundo >> dentroDeLimites: unaPosicion
+    ^ (unaPosicion x > 0 and: unaPosicion x < ancho) and:
+        (unaPosicion y > 0 and: unaPosicion y < alto).
