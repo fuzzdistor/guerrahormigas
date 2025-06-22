@@ -12,7 +12,7 @@ Batalla >> inicializarConAtacante: coloniaAtacante defensora: coloniaDefensora
     unidadesAtacantes := OrderedCollection new.
     resultado := nil.
 
-Batalla >> librarEncuentro: atk defensora: def
+Batalla class >> librarEncuentro: atk defensora: def
     | a b res |
     " pelea entre dos contrincantes "
     " ambos tiran dados d100 y el mayor gana o hay empate "
@@ -20,7 +20,7 @@ Batalla >> librarEncuentro: atk defensora: def
     " el resultado es 1 si gana a, -1 si gana b, 0 si hay empate "
     a := 0 to: 99 atRandom.
     d := 0 to: 99 atRandom.
-    res := (a - d) sign
+    res := (a - d) sign.
     (res < 0) ifTrue: [
         self atk setMuerta.
     ].
@@ -29,9 +29,6 @@ Batalla >> librarEncuentro: atk defensora: def
     ].
     ^ res
 
-Batalla >> obtenerDefensoras
-    ^ defensora defensasDisponibles.
-    
 Batalla >> librarBatalla
     | unidadesDefensoras i j |
     " manda a pelear las atacantes que fueron registradas contra las defensoras
@@ -39,7 +36,7 @@ Batalla >> librarBatalla
     o todas las defensoras de la colonia defensora pierden y también su reina "
     i := 1.
     j := 1.
-    unidadesDefensoras := self obtenerDefensoras.
+    unidadesDefensoras := defensora defensasDisponibles.
     [   | atk def res |
         atk := unidadesAtacantes at: i.
         (j <= unidadesDefensoras size) ifTrue: [
