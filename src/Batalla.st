@@ -12,14 +12,22 @@ Batalla >> inicializarConAtacante: coloniaAtacante defensora: coloniaDefensora
     unidadesAtacantes := OrderedCollection new.
     resultado := nil.
 
-Batalla class >> librarEncuentro
-    | a b |
+Batalla >> librarEncuentro: atk defensora: def
+    | a b res |
     " pelea entre dos contrincantes "
     " ambos tiran dados d100 y el mayor gana o hay empate "
+    " mata a las que corresponda y devuelve el res "
     " el resultado es 1 si gana a, -1 si gana b, 0 si hay empate "
     a := 0 to: 99 atRandom.
     d := 0 to: 99 atRandom.
-    ^ (a - d) sign
+    res := (a - d) sign
+    (res < 0) ifTrue: [
+        self atk setMuerta.
+    ].
+    (res > 0) ifTrue: [
+        self def setMuerta.
+    ].
+    ^ res
 
 Batalla >> obtenerDefensoras
     ^ defensora defensasDisponibles.
@@ -32,34 +40,28 @@ Batalla >> librarBatalla
     i := 1.
     j := 1.
     unidadesDefensoras := self obtenerDefensoras.
-    [
-        | res |
-        res := Batalla librarEncuentro.
-        " si la atacante perdio "
-        (res < 0) ifTrue: [
-            self matar: (unidadesAtacantes at: i).
+    [   | atk def res |
+        atk := unidadesAtacantes at: i.
+        (j <= unidadesDefensoras size) ifTrue: [
+            " si hay defensoras "
+            def := unidadesDefensoras at: j.
+        ] ifFalse: [
+            " si solo queda la reina "
+            def := defensora getReina.
         ].
-        " si la defensora perdio "
+        res := Batalla librarEncuentro: atk defensora: def.
+        " si la defensora perdio avanzo el arreglo"
         (res > 0) ifTrue: [ 
-            (j <= unidadesDefensoras size) ifTrue: [
-                " si hay defensoras "
-                self matar: (unidadesDefensoras at: j).
-                j + 1.
-            ] ifFalse: [
-                " si solo queda la reina "
-                self matar: (defensora getReina).
-            ].
+            j := j + 1.
         ].
         i := i + 1.
+        " mientras la colonia defensora esté viva y falten atacantes por atacar "
     ] doWhileTrue: [ (defensora destruido not) and: i <= unidadesAtacantes size ].
 
     " elimino de atacantes las hormigas que murieron "
     self hacerLimpieza.
     " si murio la reina enemiga ganan las atacantes "
     self computarResultado.
-
-Batalla >> matar: unaHormiga
-    unaHormiga setMuerta.
 
 Batalla >> computarResultado
     (defensora destruido) ifTrue: [ resultado = 'atacante' ].
