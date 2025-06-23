@@ -53,8 +53,6 @@ Mundo >> limpiarLugaresDestruidos "limpieza"
         l destruido not
         ].
 
-Mundo >> registrarComoAtacante
-
 Mundo >> getGestorBatalla
     ^ gestorBatallas.
 

@@ -25,7 +25,9 @@ GestorBatallas >> ejecutarTurno
         batalla librarBatalla
         ].
     " guardar los botines de las batallas ganadas por los atacantes "
-    dicBatallas values do: [ :batalla |
+    dicBatallas do: [ :aso |
+        | batalla | 
+        batalla := aso value.
         (batalla enCurso) ifFalse: [
             (batalla victoriaAtacante) ifTrue: [
                 dicBotin add: (batalla getAtacante) -> (batalla getBotin).
@@ -33,13 +35,13 @@ GestorBatallas >> ejecutarTurno
         ].
     ].
     " eliminar las batallas que terminaron "
-    dicBatallas select: [ :aso | 
+    dicBatallas := dicBatallas select: [ :aso | 
         | batalla |
         batalla := aso value.
         batalla enCurso
     ].
     " eliminar botines de colonias que murieron antes de reclamarlo "
-    dicBotin select: [ :aso |
+    dicBotin := dicBotin select: [ :aso |
         | atacante |
         atacante := aso key.
         atacante destruido not

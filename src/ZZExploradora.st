@@ -28,30 +28,24 @@ Exploradora >> estaExplorando
 Exploradora >> setExplorando
     estado := 'explorando'
 
-Exploradora >> ejecutarTurno: unMundo colonia: unaColonia
-    | movimientos |
-    movimientos := self getMovPorTurno.
-    [ movimientos >= 1 ] whileTrue:
-    [   
-        (self estaExplorando) ifTrue: [
-            | lugar visitado |
-            self caminar: unMundo.
-            lugar := unMundo lugarEn: posicion.
-            visitado := self previamenteVisitado: posicion.
-            ((lugar isNotNil) and: (visitado not)) ifTrue: [
-                self prepararObjetivo: lugar desde: unaColonia.
-                self setVolviendo.
-            ]
-        ] ifFalse: [
-            (self estaVolviendo) ifTrue: [   
-                (self volver) ifTrue: [
-                    self informarAReina: unaColonia.
-                    self setExplorando.
-                ].
-            ].
-        ].
-        movimientos := movimientos - 1.
-    ].
+Exploradora >> ejecutarAccion: unMundo colonia: unaColonia
+    (self estaExplorando) ifTrue: [
+        | lugar visitado |
+        self caminar: unMundo.
+        lugar := unMundo lugarEn: posicion.
+        visitado := self previamenteVisitado: posicion.
+        ((lugar isNotNil) and: (visitado not)) ifTrue: [
+            self prepararObjetivo: lugar desde: unaColonia.
+            self setVolviendo.
+        ]
+    ] ifFalse: [
+        super ejecutarAccion: unMundo colonia: unaColonia.
+    ]
+
+Exploradora >> alLlegarAHogar: unMundo colonia: unaColonia
+    self informarAReina: unaColonia.
+    self setExplorando.
+    
 
 Exploradora >> prepararObjetivo: unLugar desde: unaColonia
     | reco |
