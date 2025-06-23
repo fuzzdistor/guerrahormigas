@@ -37,6 +37,8 @@ Batalla >> librarBatalla
     i := 1.
     j := 1.
     unidadesDefensoras := defensora defensasDisponibles.
+    " mientras la colonia defensora esté viva y falten atacantes por atacar "
+    [ (defensora destruido not) and: i <= unidadesAtacantes size ] whileTrue: 
     [   | atk def res |
         atk := unidadesAtacantes at: i.
         (j <= unidadesDefensoras size) ifTrue: [
@@ -52,8 +54,7 @@ Batalla >> librarBatalla
             j := j + 1.
         ].
         i := i + 1.
-        " mientras la colonia defensora esté viva y falten atacantes por atacar "
-    ] doWhileTrue: [ (defensora destruido not) and: i <= unidadesAtacantes size ].
+    ].
 
     " elimino de atacantes las hormigas que murieron "
     self hacerLimpieza.

@@ -23,7 +23,7 @@ Exploradora >> inicializar
 Exploradora class >> movidaAt: indice
     ^ MOVIDAS at: indice
 
-Exploradora >> explorando
+Exploradora >> estaExplorando
     ^ estado = 'explorando'
 
 Exploradora >> setExplorando
@@ -31,26 +31,28 @@ Exploradora >> setExplorando
 
 Exploradora >> ejecutarTurno: unMundo colonia: unaColonia
     | movimientos |
-    movimientos := self getMovPorTurno.
-    [
-        [
+    movimientos := self class getMovPorTurno.
+    [ movimientos >= 1 ] whileTrue:
+    [   
+        (self estaExplorando) ifTrue: [
+            | lugar visitado |
             self caminar: unMundo.
-            movimientos := movimientos - 1.
             lugar := unMundo lugarEn: posicion.
             visitado := self previamenteVisitado: posicion.
             ((lugar isNotNil) and: (visitado not)) ifTrue: [
                 self prepararObjetivo: lugar desde: unaColonia.
                 self setVolviendo.
             ]
-        ] doWhileTrue: [ movimientos >= 1 and: self estaExplorando ].
-        [   
-            movimientos := movimientos - 1.
-            (self volver) ifTrue: [
-                self informarAReina: unaColonia.
-                self setExplorando.
+        ] ifFalse: [
+            (self estaVolviendo) ifTrue: [   
+                (self volver) ifTrue: [
+                    self informarAReina: unaColonia.
+                    self setExplorando.
+                ].
             ].
-        ] doWhileTrue: [ movimientos >= 1 and: self estaVolviendo ].
-    ] doWhileTrue: [ movimientos >= 1 ]
+        ].
+        movimientos := movimientos - 1.
+    ].
 
 Exploradora >> prepararObjetivo: unLugar desde: unaColonia
     | reco |
@@ -67,22 +69,14 @@ Exploradora >> previamenteVisitado: unaPosicion
         l posicion = unaPosicion ] ifNone: nil.
     ^ res isNotNil
     
-Exploradora >> explorar: unMundo colonia: unaColonia
-    | lugar visitado |
-    [ 
-        self caminar: unMundo.
-        " hacer mientras tenga movimientos disponibles y el lugar en el que estoy es nil o ya lo visité "
-    ] doWhileTrue: [ (movimientos >= 1) and: (lugar isNil or: visitado) ].
-    ((lugar isNotNil) and: (visitado not)) ifTrue: [
-    ].
-
 Exploradora >> caminar: unMundo
     | paso |
     " elegir un paso válido que no me haga retroceder ni irme de los límites del mundo "
-    [   | rand |
+    [   
+        | rand |
         rand := (1 to: 4) atRandom.
         paso := self class movidaAt: rand.
-        " hacer mientras el paso sea el inverso del previo o no este dentro de los limites "
+        " repetir mientras el paso sea el inverso del previo o no este dentro de los limites "
     ] doWhileTrue: [ (paso * -1) = pasoPrevio or: ((unMundo dentroDeLimites: posicion + paso) not) ].
     pasoPrevio := paso.
     posicion := posicion + paso.
@@ -109,7 +103,7 @@ Exploradora >> calcularRecorrido: unaPartida destino: unDestino
         ].
         recorrido add: sigPaso.
         unPunto := sigPaso.
-    ] doWhileTrue: [ unPunto ~= unDestino ]
+    ] doWhileTrue: [ unPunto ~= unDestino ].
     ^ recorrido
     
 Exploradora >> crearObjetivo: unTipo recorrido: unRecorrido
