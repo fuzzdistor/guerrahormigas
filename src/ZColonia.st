@@ -21,7 +21,9 @@ Colonia >> agregarHormiga: unaHormiga "instanciador recurso"
     colHormigas add: unaHormiga
 
 Colonia >> limpiarHormigasMuertas
-    colHormigas := colHormigas select: [ :h | h estaViva ]
+    colHormigas := colHormigas select: [ :h | 
+        (h estaMuerta) ifTrue: [ Test log: (h id) ].
+    h estaViva ]
 
 Colonia >> destruido
     " herencia por reemplazo ya que la condición de destrucción cambia "
@@ -32,6 +34,13 @@ Colonia >> almacenarAlimento: unaCantidad
 
 Colonia >> getReina
     ^ reina
+
+Colonia >> getHormigas: unTipo
+    ^ colHormigas select: [ :h | h class = unTipo ]
+
+Colonia >> defensasDisponibles
+    ^ (colHormigas select: 
+        [ :h | h class = Guerrera ]) select: [ :g | g entrenada ].
 
 Colonia >> ejecutarTurno: unMundo
     " herencia por reemplazo "

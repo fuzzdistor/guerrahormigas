@@ -6,16 +6,19 @@ Object subclass: #Simulacion
 Simulacion class >> crear "creador de instancia"
     ^ self new inicializar
 
-Simulacion >> inicializar
+Simulacion >> inicializar "incializador"
     mundo := nil.
     nroTurno := 0
 
-Simulacion >> ejecutarTurno "ejecucion"
+Simulacion >> ejecutarTurno "turno"
     mundo ejecutarTurno.
     nroTurno := nroTurno + 1
 
+Simulacion >> getNroTurno
+    ^ nroTurno
+
 Simulacion >> crearMundoDefault
-    self crearMundo: Configuracion default
+    ^ self crearMundo: Configuracion default
 
 Simulacion >> crearMundo: unaConf
     | colonias fuentes |
@@ -43,6 +46,7 @@ Simulacion >> crearMundo: unaConf
         i := j*3 + 1.
         nuevaCol := mundo crearFuenteComida: (Point x: (fuentes at: i) y: (fuentes at: i+1)) cantidadComida: (fuentes at: i+2).
     ].
+    ^ mundo
 
 Simulacion >> crearColonia: unPunto cantidadComida: unaCantidad
     mundo crearColonia: unPunto cantidadComida: unaCantidad

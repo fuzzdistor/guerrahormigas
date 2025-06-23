@@ -6,47 +6,27 @@ Trabajadora subclass: #Obrera
 Obrera class >> crear
     ^ self new inicializar
 
+Obrera >> getMovPorTurno
+    " retorna 3 si no está cargando comida y 1 si tiene carga "
+    ^ 3 - ((comidaCarga sign) * 2)
+
 Obrera >> inicializar
     super inicializar.
-    comidaCarga := 0
+    comidaCarga := 0.
 
-Obrera >> ejecutarTurno: unMundo colonia: unaColonia
-    (self estaInactiva) ifTrue: [
-        self comer: unaColonia.
-    ] ifFalse: [
-        (self estaAvanzando) ifTrue: [
-            self avanzar.
-            (objetivo enDestino) ifTrue: [
-                self recogerAlimento: unMundo.
-            ]
-        ] ifFalse: [
-            (self estaVolviendo) ifTrue: [
-                self volver.
-                (self enColonia) ifTrue: [
-                    self depositarAlimento: unaColonia.
-                ].
-            ].
-        ].
-    ].
-
-Obrera >> avanzar
-    posicion := objetivo pasoSiguiente: posicion.
-
-Obrera >> volver
-    posicion := objetivo pasoAnterior: posicion.
-
-Obrera >> recogerAlimento: unMundo
+Obrera >> alLlegarAObjetivo: unMundo colonia: unaColonia
     | fuente | 
-    fuente := mundo lugarEn: posicion.
+    " buscar fuente en posicion y tomar racion "
+    fuente := unMundo lugarEn: posicion.
     fuente ifNotNil: [
         comidaCarga := fuente entregarRacion: 3
     ].
     self setVolviendo.
 
-Obrera >> depositarAlimento: unaColonia
+Obrera >> alLlegarAHogar: unMundo colonia: unaColonia
     unaColonia almacenarAlimento: comidaCarga.
     (comidaCarga = 0) ifTrue: [
+        unaColonia getReina informarRecoleccionTerminada: objetivo.
         self setInactiva.
     ].
     comidaCarga := 0.
-

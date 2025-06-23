@@ -48,6 +48,6 @@ GestorBatallas >> ejecutarTurno
 GestorBatallas >> solicitarBotin: unaColonia
     | botin |
     botin := dicBotin at: unaColonia.
-    dicBotin removeKey: unaColonia.
+    dicBotin at: unaColonia put: 0.
     ^ botin
 

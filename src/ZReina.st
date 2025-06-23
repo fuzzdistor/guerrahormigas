@@ -19,7 +19,7 @@ Reina >> inicializar
     comidaConsumida := 0.
     colaObjetivos := OrderedCollection new.
     historialObjetivos := OrderedCollection new.
-    estado := 'inactiva'
+    self setInactiva
 
 Reina >> recibirObjetivo: unObjetivo
     " si no lo encuentro lo añado "
@@ -60,15 +60,57 @@ Reina >> ejecutarTurno: unMundo colonia: unaColonia
     (self estaViva) ifTrue: [
         (comidaConsumida = Reina comidaMax) ifTrue: [
             hormiga := self crearTrabajadora.
-            comidaConsumida = 0.
+            comidaConsumida := 0.
             (hormiga isNotNil) ifTrue: [
+                Test log: hormiga.
                 unaColonia agregarHormiga: hormiga.
             ].
         ].
-        self procesarObjetivos: unMundo.
+        self procesarObjetivos: unaColonia
     ].
 
+Reina >> procesarObjetivos: unaColonia
+    self procesarAtaques: unaColonia.
+    self procesarRecolecciones: unaColonia.
 
-Reina >> procesarObjetivos: unMundo
-    " TODO "
+Reina >> procesarAtaques: unaColonia
+    | guerreras objetivoAtaque |
+    " selecciono un objetivo de ataque "
+    objetivoAtaque := colaObjetivos detect: [ :o | o getTipoLugar = Colonia ] ifNone: nil.
+    " selecciono guerreras entrenadas "
+    guerreras := (unaColonia getHormigas: Guerrera) select: [ :g | g entrenada ].
+    " si no está atacando, hay objetivo y hay al menos 10 guerreras preparadas "
+    ((unaColonia atacando or: objetivoAtaque isNil) or: (guerreras size < 10)) ifFalse: [
+        | objetivo |
+        " deja al menos 5 guerreras entrenadas en la colonia "
+        (1 to: guerreras size - 5) do: [ :i |
+            | hormiga |
+            hormiga := guerreras at: i.
+            hormiga setObjetivo: objetivoAtaque.
+            hormiga setAvanzando.
+        ].
+        " añado el objetivo al historial y lo quito de la cola "
+        historialObjetivos add: objetivoAtaque.
+        colaObjetivos remove: objetivoAtaque.
+    ].
+
+Reina >> informarRecoleccionTerminada: unObjetivo
+    (colaObjetivos includes: unObjetivo) ifTrue: [
+        historialObjetivos add: unObjetivo.
+        colaObjetivos remove: unObjetivo.
+    ]
     
+Reina >> procesarRecolecciones: unaColonia
+    | obreras objetivosRecoleccion |
+    " selecciono objetivos de recoleccion "
+    objetivosRecoleccion := colaObjetivos select: [ :o | o getTipoLugar = FuenteComida ].
+    " selecciono obreras disponibles "
+    obreras := (unaColonia getHormigas: Obrera) select: [ :o | o estaInactiva ].
+    " si hay objetivos de recoleccion asignar a las obreras "
+    (objetivosRecoleccion isNotEmpty) ifTrue: [
+        obreras do: [ :obrera |
+            obrera setObjetivo: objetivosRecoleccion first.
+            obrera setAvanzando.
+        ].
+    ].
+

@@ -1,14 +1,13 @@
 Trabajadora subclass: #Exploradora
     instanceVariableNames: 'historialLugares pasoPrevio'
-    classVariableNames: 'MOVIMIENTOS_POR_TURNO MOVIDAS'
+    classVariableNames: 'MOVIDAS'
     package: 'GuerraHormigas'
 
 Exploradora class >> inicializarClase
-    MOVIMIENTOS_POR_TURNO := 4.
     MOVIDAS := Array with: 1@0 with: (-1)@0 with: 0@1 with: 0@(-1).
 
-Exploradora class >> getMovPorTurno
-    ^ MOVIMIENTOS_POR_TURNO
+Exploradora >> getMovPorTurno
+    ^ 4
 
 Exploradora class >> crear
     ^ self new inicializar
@@ -31,7 +30,7 @@ Exploradora >> setExplorando
 
 Exploradora >> ejecutarTurno: unMundo colonia: unaColonia
     | movimientos |
-    movimientos := self class getMovPorTurno.
+    movimientos := self getMovPorTurno.
     [ movimientos >= 1 ] whileTrue:
     [   
         (self estaExplorando) ifTrue: [

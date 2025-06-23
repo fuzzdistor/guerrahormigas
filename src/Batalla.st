@@ -3,8 +3,8 @@ Object subclass: #Batalla
     classVariableNames: ''
     package: 'GuerraHormigas'
 
-Batalla class >> crearConAtacante: unaColAta defensora: unaColDef
-    ^ self new inicializarConAtacante: coloniaAtacante defensora: coloniaDefensora
+Batalla class >> crear: unaColAta defensora: unaColDef
+    ^ self new inicializarConAtacante: unaColAta defensora: unaColDef
 
 Batalla >> inicializarConAtacante: coloniaAtacante defensora: coloniaDefensora
     atacante := coloniaAtacante.
@@ -13,19 +13,19 @@ Batalla >> inicializarConAtacante: coloniaAtacante defensora: coloniaDefensora
     resultado := nil.
 
 Batalla class >> librarEncuentro: atk defensora: def
-    | a b res |
+    | a d res |
     " pelea entre dos contrincantes "
     " ambos tiran dados d100 y el mayor gana o hay empate "
     " mata a las que corresponda y devuelve el res "
     " el resultado es 1 si gana a, -1 si gana b, 0 si hay empate "
-    a := 0 to: 99 atRandom.
-    d := 0 to: 99 atRandom.
+    a := (0 to: 99) atRandom.
+    d := (0 to: 99) atRandom.
     res := (a - d) sign.
     (res < 0) ifTrue: [
-        self atk setMuerta.
+        atk setMuerta.
     ].
     (res > 0) ifTrue: [
-        self def setMuerta.
+        def setMuerta.
     ].
     ^ res
 

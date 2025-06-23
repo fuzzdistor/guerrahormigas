@@ -17,7 +17,7 @@ Mundo >> lugarEn: unPunto "observador"
         lugar posicion = unPunto
         ] ifNone: nil
 
-Mundo >> crearFuenteComida: unPunto cantidadComida: unaCantidad
+Mundo >> crearFuenteComida: unPunto cantidadComida: unaCantidad "creador de recurso"
     | fuenteComida |
     (self lugarEn: unPunto) ifNil: [
         fuenteComida := FuenteComida crear: unPunto comida: unaCantidad.
@@ -25,7 +25,7 @@ Mundo >> crearFuenteComida: unPunto cantidadComida: unaCantidad
         ].
     ^ fuenteComida
 
-Mundo >> crearColonia: unPunto cantidadComida: unaCantidad
+Mundo >> crearColonia: unPunto cantidadComida: unaCantidad "creador de recurso"
     | colonia |
     (self lugarEn: unPunto) ifNil: [
         colonia := Colonia crear: unPunto comida: unaCantidad.
@@ -33,24 +33,31 @@ Mundo >> crearColonia: unPunto cantidadComida: unaCantidad
         ].
     ^ colonia
 
-Mundo >> ejecutarTurno
+Mundo >> ejecutarTurno "turno"
     "ejecutar turno de todos los lugares"
     colLugares do: [ :l |
         l ejecutarTurno: self
         ].
 
-    "destruir lugares sin comida"
-    colLugares := colLugares select: [ :l |
-        l destruido not
-        ].
+    self limpiarLugaresDestruidos.
 
     "hacer un turno de batallas"
     gestorBatallas ejecutarTurno.
 
+    self limpiarLugaresDestruidos.
+
+
+Mundo >> limpiarLugaresDestruidos "limpieza"
+    " conservar solo los lugares que no están destruídos "
     colLugares := colLugares select: [ :l |
         l destruido not
         ].
 
-Mundo >> dentroDeLimites: unaPosicion
+Mundo >> registrarComoAtacante
+
+Mundo >> getGestorBatalla
+    ^ gestorBatallas.
+
+Mundo >> dentroDeLimites: unaPosicion "comprobacion"
     ^ (unaPosicion x > 0 and: unaPosicion x < ancho) and:
         (unaPosicion y > 0 and: unaPosicion y < alto).
