@@ -1,5 +1,5 @@
 Trabajadora subclass: #Exploradora
-    instanceVariableNames: 'historialLugares pasoPrevio movimientos'
+    instanceVariableNames: 'historialLugares pasoPrevio'
     classVariableNames: 'MOVIMIENTOS_POR_TURNO MOVIDAS'
     package: 'GuerraHormigas'
 
@@ -18,32 +18,48 @@ Exploradora >> inicializar
     historialLugares := OrderedCollection new.
     " por defecto asignamos derecha como paso previo "
     pasoPrevio := Exploradora movidaAt: 1.
-    self setAvanzando.
+    self setExplorando.
 
 Exploradora class >> movidaAt: indice
     ^ MOVIDAS at: indice
 
+Exploradora >> explorando
+    ^ estado = 'explorando'
+
+Exploradora >> setExplorando
+    estado := 'explorando'
+
 Exploradora >> ejecutarTurno: unMundo colonia: unaColonia
-    movimientos := Exploradora getMovPorTurno.
+    | movimientos |
+    movimientos := self getMovPorTurno.
     [
-        (self estaAvanzando) ifTrue: [
-            self explorar: unMundo colonia: unaColonia.
-        ].
-        (self estaVolviendo) ifTrue: [
-            [ 
-                self volver.
-                movimientos := movimientos - 1.
-                (objetivo enPartida: posicion) ifTrue: [
-                    (unaColonia getReina) recibirObjetivo: objetivo.
-                    self setAvanzando.
-                    objetivo := nil.
-                ].
-            ] doWhileTrue: [ movimientos >= 1 and: self estaVolviendo ].
-        ].
+        [
+            self caminar: unMundo.
+            movimientos := movimientos - 1.
+            lugar := unMundo lugarEn: posicion.
+            visitado := self previamenteVisitado: posicion.
+            ((lugar isNotNil) and: (visitado not)) ifTrue: [
+                self prepararObjetivo: lugar desde: unaColonia.
+                self setVolviendo.
+            ]
+        ] doWhileTrue: [ movimientos >= 1 and: self estaExplorando ].
+        [   
+            movimientos := movimientos - 1.
+            (self volver) ifTrue: [
+                self informarAReina: unaColonia.
+                self setExplorando.
+            ].
+        ] doWhileTrue: [ movimientos >= 1 and: self estaVolviendo ].
     ] doWhileTrue: [ movimientos >= 1 ]
 
-Exploradora >> volver
-    posicion := objetivo pasoAnterior: posicion.
+Exploradora >> prepararObjetivo: unLugar desde: unaColonia
+    | reco |
+    reco := self calcularRecorrido: (unaColonia posicion) destino: unLugar posicion.
+    objetivo := self crearObjetivo: (unLugar class) recorrido: reco.
+
+Exploradora >> informarAReina: unaColonia
+    (unaColonia getReina) recibirObjetivo: objetivo.
+    objetivo := nil.
 
 Exploradora >> previamenteVisitado: unaPosicion
     | res |
@@ -55,15 +71,9 @@ Exploradora >> explorar: unMundo colonia: unaColonia
     | lugar visitado |
     [ 
         self caminar: unMundo.
-        lugar := unMundo lugarEn: posicion.
-        visitado := self previamenteVisitado: posicion.
-        movimientos := movimientos - 1.
         " hacer mientras tenga movimientos disponibles y el lugar en el que estoy es nil o ya lo visité "
     ] doWhileTrue: [ (movimientos >= 1) and: (lugar isNil or: visitado) ].
     ((lugar isNotNil) and: (visitado not)) ifTrue: [
-        objetivo := self crearObjetivo: (lugar class).
-        self calcularRecorrido: (unaColonia posicion) destino: posicion.
-        self setVolviendo.
     ].
 
 Exploradora >> caminar: unMundo
@@ -71,7 +81,7 @@ Exploradora >> caminar: unMundo
     " elegir un paso válido que no me haga retroceder ni irme de los límites del mundo "
     [   | rand |
         rand := (1 to: 4) atRandom.
-        paso := Exploradora movidaAt: rand.
+        paso := self class movidaAt: rand.
         " hacer mientras el paso sea el inverso del previo o no este dentro de los limites "
     ] doWhileTrue: [ (paso * -1) = pasoPrevio or: ((unMundo dentroDeLimites: posicion + paso) not) ].
     pasoPrevio := paso.
@@ -84,7 +94,7 @@ Exploradora >> setLugar: unLugar
 Exploradora >> calcularRecorrido: unaPartida destino: unDestino
     | recorrido unPunto |
     unPunto := unaPartida.
-    recorrido := objetivo getRecorrido.
+    recorrido := OrderedCollection new.
     recorrido add: unPunto.
     [ 
         | minDist sigPaso |
@@ -100,7 +110,8 @@ Exploradora >> calcularRecorrido: unaPartida destino: unDestino
         recorrido add: sigPaso.
         unPunto := sigPaso.
     ] doWhileTrue: [ unPunto ~= unDestino ]
+    ^ recorrido
     
-Exploradora >> crearObjetivo: unTipo
-    ^ Objetivo crear: unTipo
+Exploradora >> crearObjetivo: unTipo recorrido: unRecorrido
+    ^ Objetivo crear: unTipo recorrido: unRecorrido
     

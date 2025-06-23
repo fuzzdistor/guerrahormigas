@@ -3,12 +3,12 @@ Object subclass: #Objetivo
     classVariableNames: ''
     package: 'GuerraHormigas'
 
-Objetivo class >> crear: unTipoLugar
-    ^ self new inicializar: unTipoLugar
+Objetivo class >> crear: unTipoLugar recorrido: unRecorrido
+    ^ self new inicializar: unTipoLugar recorrido: unRecorrido.
     
-Objetivo >> inicializar: unTipoLugar
+Objetivo >> inicializar: unTipoLugar recorrido: unRecorrido
     tipoLugar := unTipoLugar.
-    recorrido := OrderedCollection new.
+    recorrido := unRecorrido.
 
 Objetivo >> getTipoLugar
     ^ tipoLugar

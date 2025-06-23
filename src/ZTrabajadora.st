@@ -23,3 +23,13 @@ Trabajadora >> setLugar: unLugar
 
 Trabajadora >> setObjetivo: unObjetivo
     objetivo := unObjetivo.
+
+Trabajadora >> avanzar
+    " avanza en el recorrido del objetivo y devuelve verdadero si llegó a destino"
+    posicion := objetivo pasoSiguiente: posicion.
+    ^ objetivo enDestino: posicion.
+
+Trabajadora >> volver
+    " retrocede en el recorrido del objetivo y devuelve verdadero si llegó a partida"
+    posicion := objetivo pasoAnterior: posicion.
+    ^ objetivo enPartida: posicion.
