@@ -66,6 +66,7 @@ Batalla >> computarResultado
         guerrera := unidadesAtacantes at: 1.
         botin := self getBotin.
         guerrera objetivo guardarBotin: botin.
+        unidadesAtacantes do: [ :h | h setVolviendo ].
     ].
 
 Batalla >> hacerLimpieza
@@ -80,7 +81,7 @@ Batalla >> enCurso
 
 Batalla >> getBotin
     | botin | 
-    botin := defensora getComida.
+    botin := defensora cantidadComida.
     defensora entregarRacion: botin.
     ^ botin
 

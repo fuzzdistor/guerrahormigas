@@ -38,7 +38,7 @@ Colonia >> getHormigas: unBloque
     ^ colHormigas select: unBloque
 
 Colonia >> defensasDisponibles
-    ^ colHormigas select: [ :h | h esGuerrera and: [ g entrenada ] ].
+    ^ colHormigas select: [ :h | h esGuerrera and: [ h entrenada ] ].
 
 Colonia >> ejecutarTurno: unMundo
     " herencia por reemplazo "

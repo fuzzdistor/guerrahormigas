@@ -38,7 +38,7 @@ Guerrera >> alLlegarAObjetivo: unMundo colonia: unaColonia
     ]
 
 Guerrera >> alLlegarAHogar: unMundo colonia: unaColonia
-    | gestor botin |
+    | gestor |
     " al llegar informar objetivo "
     unaColonia informarObjetivoTerminado: objetivo.
     objetivo := nil.
