@@ -10,8 +10,11 @@ Objetivo >> inicializar: unTipoLugar recorrido: unRecorrido
     tipoLugar := unTipoLugar.
     recorrido := unRecorrido.
 
-Objetivo >> getTipoLugar
-    ^ tipoLugar
+Objetivo >> esRecoleccion
+    ^ tipo = 'recoleccion'
+
+Objetivo >> esAtaque
+    ^ tipo = 'ataque'
 
 Objetivo >> getDestino
     ^ recorrido last

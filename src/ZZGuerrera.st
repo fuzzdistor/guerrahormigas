@@ -3,6 +3,9 @@ Trabajadora subclass: #Guerrera
     classVariableNames: ''
     package: 'GuerraHormigas'
 
+Guerrera >> esGuerrera
+    ^ true
+
 Guerrera class >> crear
     ^ self new inicializar
 

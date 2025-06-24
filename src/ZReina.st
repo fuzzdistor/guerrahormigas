@@ -3,6 +3,9 @@ Hormiga subclass: #Reina
     classVariableNames: 'COMIDA_MAX'
     package: 'GuerraHormigas'
 
+Reina >> esReina
+    ^ true
+
 Reina class >> inicializarClase: comidaMax
     COMIDA_MAX := comidaMax
 
@@ -32,11 +35,11 @@ Reina >> crearTrabajadora "instanciador recurso"
     " está comprobado que esto da las chances correctas"
     chance := (0 to: 9) atRandom.
     (chance < 3) ifTrue: [
-    	hormiga := self crearTrabajadora: Obrera. 
+    	hormiga := self crearObrera
     ] ifFalse: [ (chance < 5) ifTrue: [ 
-    		hormiga := self crearTrabajadora: Exploradora.
+    		hormiga := self crearExploradora
     	] ifFalse: [(chance < 8) ifTrue: [ 
-                hormiga := self crearTrabajadora: Guerrera.
+                hormiga := self crearGuerrera
     		]
     	]
     ].
@@ -49,9 +52,19 @@ Reina >> comer: unaColonia
         comidaConsumida := comidaConsumida + 1.
     ]
 
-Reina >> crearTrabajadora: unTipo 
+Reina >> crearExploradora
     | hormiga |
-    hormiga := unTipo crear.
+    hormiga := Exploradora crear.
+    ^ hormiga
+
+Reina >> crearGuerrera
+    | hormiga |
+    hormiga := Guerrera crear.
+    ^ hormiga
+
+Reina >> crearObrera
+    | hormiga |
+    hormiga := Obrera crear.
     ^ hormiga
 
 Reina >> ejecutarTurno: unMundo colonia: unaColonia

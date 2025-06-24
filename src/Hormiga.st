@@ -19,6 +19,24 @@ Hormiga >> inicializar "inicializador de instancia"
 Hormiga >> ejecutarTurno: unMundo colonia: unaColonia
     " base polimórfica "
 
+Hormiga >> esHormiga
+    ^ true
+
+Hormiga >> esReina
+    ^ false
+
+Hormiga >> esTrabajadora
+    ^ false
+
+Hormiga >> esObrera
+    ^ false
+
+Hormiga >> esExploradora
+    ^ false
+
+Hormiga >> esGuerrera
+    ^ false
+
 Hormiga >> id "observador"
     ^ identificador
 

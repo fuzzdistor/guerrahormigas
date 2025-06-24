@@ -3,6 +3,8 @@ Hormiga subclass: #Trabajadora
     classVariableNames: ''
     package: 'GuerraHormigas'
 
+Trabajadora >> esTrabajadora
+    ^ true
 
 Trabajadora >> inicializar "inicializador de instancia"
     super inicializar.

@@ -3,6 +3,9 @@ Trabajadora subclass: #Exploradora
     classVariableNames: 'MOVIDAS'
     package: 'GuerraHormigas'
 
+Exploradora >> esExploradora
+    ^ true
+
 Exploradora class >> inicializarClase
     MOVIDAS := Array with: 1@0 with: (-1)@0 with: 0@1 with: 0@(-1).
 
