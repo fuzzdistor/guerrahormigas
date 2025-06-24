@@ -57,5 +57,5 @@ Mundo >> getGestorBatalla
     ^ gestorBatallas.
 
 Mundo >> dentroDeLimites: unaPosicion "comprobacion"
-    ^ (unaPosicion x > 0 and: unaPosicion x < ancho) and:
-        (unaPosicion y > 0 and: unaPosicion y < alto).
+    ^ (unaPosicion x >= 1 and: unaPosicion x <= ancho) and:
+        (unaPosicion y >= 1 and: unaPosicion y <= alto).
