@@ -1,5 +1,5 @@
 Object subclass: #GestorBatallas
-    instanceVariableNames: 'dicBatallas dicBotin'
+    instanceVariableNames: 'dicBatallas'
     classVariableNames: ''
     package: 'GuerraHormigas'
 
@@ -8,7 +8,6 @@ GestorBatallas class >> crear
 
 GestorBatallas >> inicializar
     dicBatallas := Dictionary new.
-    dicBotin := Dictionary new.
 
 GestorBatallas >> registrarAtacante: coloniaAtacante unidad: unaHormiga coloniaDef: coloniaDefensora
     | batalla |
@@ -24,32 +23,10 @@ GestorBatallas >> ejecutarTurno
     dicBatallas values do: [ :batalla |
         batalla librarBatalla
         ].
-    " guardar los botines de las batallas ganadas por los atacantes "
-    dicBatallas do: [ :aso |
-        | batalla | 
-        batalla := aso value.
-        (batalla enCurso) ifFalse: [
-            (batalla victoriaAtacante) ifTrue: [
-                dicBotin add: (batalla getAtacante) -> (batalla getBotin).
-            ].
-        ].
-    ].
+
     " eliminar las batallas que terminaron "
     dicBatallas := dicBatallas select: [ :aso | 
         | batalla |
         batalla := aso value.
         batalla enCurso
     ].
-    " eliminar botines de colonias que murieron antes de reclamarlo "
-    dicBotin := dicBotin select: [ :aso |
-        | atacante |
-        atacante := aso key.
-        atacante destruido not
-    ]
-
-GestorBatallas >> solicitarBotin: unaColonia
-    | botin |
-    botin := dicBotin at: unaColonia.
-    dicBotin at: unaColonia put: 0.
-    ^ botin
-

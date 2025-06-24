@@ -1,20 +1,22 @@
 Object subclass: #Objetivo
-    instanceVariableNames: 'recorrido tipoLugar'
+    instanceVariableNames: 'recorrido'
     classVariableNames: ''
     package: 'GuerraHormigas'
 
-Objetivo class >> crear: unTipoLugar recorrido: unRecorrido
-    ^ self new inicializar: unTipoLugar recorrido: unRecorrido.
+Objetivo class >> crear: unRecorrido
+    ^ self new inicializar: unRecorrido.
     
-Objetivo >> inicializar: unTipoLugar recorrido: unRecorrido
-    tipoLugar := unTipoLugar.
+Objetivo >> inicializar: unRecorrido
     recorrido := unRecorrido.
 
+Objetivo >> esObjetivo
+    ^ true
+
 Objetivo >> esRecoleccion
-    ^ tipo = 'recoleccion'
+    ^ false
 
 Objetivo >> esAtaque
-    ^ tipo = 'ataque'
+    ^ false
 
 Objetivo >> getDestino
     ^ recorrido last

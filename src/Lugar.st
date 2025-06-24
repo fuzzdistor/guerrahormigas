@@ -29,3 +29,13 @@ Lugar >> entregarRacion: unaCantidad
         cantidadComida := 0.
     ].
     ^ comidaEntregada.
+
+Lugar >> esLugar
+    ^ true
+
+Lugar >> esColonia
+    ^ false
+
+Lugar >> esFuenteComida
+    ^ false
+

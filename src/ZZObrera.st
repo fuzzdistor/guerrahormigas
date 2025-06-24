@@ -29,7 +29,7 @@ Obrera >> alLlegarAObjetivo: unMundo colonia: unaColonia
 Obrera >> alLlegarAHogar: unMundo colonia: unaColonia
     unaColonia almacenarAlimento: comidaCarga.
     (comidaCarga = 0) ifTrue: [
-        unaColonia getReina informarRecoleccionTerminada: objetivo.
+        unaColonia informarObjetivoTerminado: objetivo.
         self setInactiva.
     ].
     comidaCarga := 0.

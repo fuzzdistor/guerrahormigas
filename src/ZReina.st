@@ -89,9 +89,9 @@ Reina >> procesarObjetivos: unaColonia
 Reina >> procesarAtaques: unaColonia
     | guerreras objetivoAtaque |
     " selecciono un objetivo de ataque "
-    objetivoAtaque := colaObjetivos detect: [ :o | o getTipoLugar = Colonia ] ifNone: nil.
+    objetivoAtaque := colaObjetivos detect: [ :a | a esAtaque ] ifNone: nil.
     " selecciono guerreras entrenadas "
-    guerreras := (unaColonia getHormigas: Guerrera) select: [ :g | g entrenada ].
+    guerreras := (unaColonia getHormigas: [ :g | g esGuerrera and: [ g entrenada ] ]).
     " si no está atacando, hay objetivo y hay al menos 10 guerreras preparadas "
     ((unaColonia atacando or: objetivoAtaque isNil) or: (guerreras size < 10)) ifFalse: [
         | objetivo |
@@ -102,23 +102,28 @@ Reina >> procesarAtaques: unaColonia
             hormiga setObjetivo: objetivoAtaque.
             hormiga setAvanzando.
         ].
-        " añado el objetivo al historial y lo quito de la cola "
+        " como solo voy a declarar la guerra una vez
+          añado el objetivo al historial y lo quito de la cola "
         historialObjetivos add: objetivoAtaque.
         colaObjetivos remove: objetivoAtaque.
     ].
 
-Reina >> informarRecoleccionTerminada: unObjetivo
-    (colaObjetivos includes: unObjetivo) ifTrue: [
-        historialObjetivos add: unObjetivo.
-        colaObjetivos remove: unObjetivo.
-    ]
+Reina >> informarObjetivoTerminado: unObjetivo colonia: unaColonia
+    (unObjetivo esAtaque) ifTrue: [
+        unaColonia almacenarAlimento: unObjetivo reclamarBotin.
+    ] ifFalse: [
+        (colaObjetivos includes: unObjetivo) ifTrue: [
+            historialObjetivos add: unObjetivo.
+            colaObjetivos remove: unObjetivo.
+        ].
+    ].
     
 Reina >> procesarRecolecciones: unaColonia
     | obreras objetivosRecoleccion |
     " selecciono objetivos de recoleccion "
-    objetivosRecoleccion := colaObjetivos select: [ :o | o getTipoLugar = FuenteComida ].
+    objetivosRecoleccion := colaObjetivos select: [ :r | r esRecoleccion ].
     " selecciono obreras disponibles "
-    obreras := (unaColonia getHormigas: Obrera) select: [ :o | o estaInactiva ].
+    obreras := (unaColonia getHormigas: [ :o | o esObrera and: [ o estaInactiva ] ]).
     " si hay objetivos de recoleccion asignar a las obreras "
     (objetivosRecoleccion isNotEmpty) ifTrue: [
         obreras do: [ :obrera |

@@ -53,7 +53,12 @@ Exploradora >> alLlegarAHogar: unMundo colonia: unaColonia
 Exploradora >> prepararObjetivo: unLugar desde: unaColonia
     | reco |
     reco := self calcularRecorrido: (unaColonia posicion) destino: unLugar posicion.
-    objetivo := self crearObjetivo: (unLugar class) recorrido: reco.
+    (unLugar esColonia) ifTrue: [
+        objetivo := self crearAtaque: reco.
+    ] ifFalse: [(unLugar esFuenteComida) ifTrue: [
+            objetivo := self crearRecoleccion: reco.
+        ].
+    ].
 
 Exploradora >> informarAReina: unaColonia
     (unaColonia getReina) recibirObjetivo: objetivo.
@@ -101,7 +106,10 @@ Exploradora >> calcularRecorrido: unaPartida destino: unDestino
         unPunto := sigPaso.
     ] doWhileTrue: [ unPunto ~= unDestino ].
     ^ recorrido
-    
-Exploradora >> crearObjetivo: unTipo recorrido: unRecorrido
-    ^ Objetivo crear: unTipo recorrido: unRecorrido
+
+Exploradora >> crearAtaque: unRecorrido
+    ^ Ataque crear: unRecorrido
+
+Exploradora >> crearRecoleccion: unRecorrido
+    ^ Recoleccion crear: unRecorrido
     

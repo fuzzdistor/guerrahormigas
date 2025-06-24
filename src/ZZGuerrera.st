@@ -39,11 +39,10 @@ Guerrera >> alLlegarAObjetivo: unMundo colonia: unaColonia
 
 Guerrera >> alLlegarAHogar: unMundo colonia: unaColonia
     | gestor botin |
-    " cobrar botin al llegar "
-    gestor := unMundo getGestorBatalla.
-    botin := gestor solicitarBotin: unaColonia.
-    unaColonia almacenarAlimento: botin.
-    objetivo := nil
+    " al llegar informar objetivo "
+    unaColonia informarObjetivoTerminado: objetivo.
+    objetivo := nil.
+    self setInactiva.
 
 Guerrera >> ejecutarTurno: unMundo colonia: unaColonia
     turnosHastaEntrenada := 0 max: (turnosHastaEntrenada - 1).

@@ -8,3 +8,6 @@ FuenteComida class >> crear: unaPosicion comida: cantComida "constructor"
 
 FuenteComida >> inicializar: unaPosicion comida: unaCantidad
     super inicializar: unaPosicion comida: unaCantidad.
+
+FuenteComida >> esFuenteComida
+    ^ true

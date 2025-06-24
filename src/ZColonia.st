@@ -16,7 +16,6 @@ Colonia >> atacando
         (h isMemberOf: Guerrera) and: (h objetivo notNil) ] ifNone: nil) notNil 
 
 Colonia >> agregarHormiga: unaHormiga "instanciador recurso"
-    unaHormiga setPosicion: self posicion.
     unaHormiga setLugar: self.
     colHormigas add: unaHormiga
 
@@ -35,8 +34,8 @@ Colonia >> almacenarAlimento: unaCantidad
 Colonia >> getReina
     ^ reina
 
-Colonia >> getHormigas: unTipo
-    ^ colHormigas select: [ :h | h class = unTipo ]
+Colonia >> getHormigas: unBloque
+    ^ colHormigas select: unBloque
 
 Colonia >> defensasDisponibles
     ^ (colHormigas select: 
@@ -49,3 +48,9 @@ Colonia >> ejecutarTurno: unMundo
         colHormigas do: [ :h | h ejecutarTurno: unMundo colonia: self ].
         colHormigas := colHormigas select: [ :h | h estaViva ].
     ].
+
+Colonia >> informarObjetivoTerminado: objetivo
+    reina informarObjetivoTerminado: objetivo colonia: self
+
+Colonia >> esColonia
+    ^ true

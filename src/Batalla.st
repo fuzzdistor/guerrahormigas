@@ -1,5 +1,5 @@
 Object subclass: #Batalla
-    instanceVariableNames: 'atacante defensora unidadesAtacantes resultado'
+    instanceVariableNames: 'atacante defensora unidadesAtacantes'
     classVariableNames: ''
     package: 'GuerraHormigas'
 
@@ -10,7 +10,6 @@ Batalla >> inicializarConAtacante: coloniaAtacante defensora: coloniaDefensora
     atacante := coloniaAtacante.
     defensora := coloniaDefensora.
     unidadesAtacantes := OrderedCollection new.
-    resultado := nil.
 
 Batalla class >> librarEncuentro: atk defensora: def
     | a d res |
@@ -62,9 +61,12 @@ Batalla >> librarBatalla
     self computarResultado.
 
 Batalla >> computarResultado
-    (defensora destruido) ifTrue: [ resultado = 'atacante' ].
-    " si no quedan hormigas atacantes ganan las defensoras "
-    (unidadesAtacantes size = 0) ifTrue: [ resultado = 'defensora' ].
+    (defensora destruido) ifTrue: [ 
+        | guerrera botin |
+        guerrera := unidadesAtacantes at: 1.
+        botin := self getBotin.
+        guerrera objetivo guardarBotin: botin.
+    ].
 
 Batalla >> hacerLimpieza
     " limpiar atacantes "
@@ -74,13 +76,7 @@ Batalla >> hacerLimpieza
     atacante limpiarHormigasMuertas.
 
 Batalla >> enCurso
-    ^ resultado isNil
-
-Batalla >> victoriaAtacante
-    ^ resultado = 'atacante'
-
-Batalla >> victoriaDefensora
-    ^ resultado = 'defensora'
+    ^ (defensora destruido not) and: unidadesAtacantes isNotEmpty.
 
 Batalla >> getBotin
     | botin | 
