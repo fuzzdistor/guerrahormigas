@@ -13,7 +13,7 @@ Colonia >> inicializar: unaPosicion comida: cantComida
 
 Colonia >> atacando
     ^ (colHormigas detect: [ :h | 
-        (h isMemberOf: Guerrera) and: (h objetivo notNil) ] ifNone: nil) notNil 
+        (h esGuerrera) and: (h objetivo notNil) ] ifNone: nil) notNil 
 
 Colonia >> agregarHormiga: unaHormiga "instanciador recurso"
     unaHormiga setLugar: self.
@@ -38,7 +38,7 @@ Colonia >> getHormigas: unBloque
     ^ colHormigas select: unBloque
 
 Colonia >> defensasDisponibles
-    ^ colHormigas select: [ :h | h isGuerrera and: [ g entrenada ] ].
+    ^ colHormigas select: [ :h | h esGuerrera and: [ g entrenada ] ].
 
 Colonia >> ejecutarTurno: unMundo
     " herencia por reemplazo "
