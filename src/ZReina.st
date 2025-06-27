@@ -19,6 +19,7 @@ Reina class >> comidaMax
     ^ COMIDA_MAX
 
 Reina >> inicializar
+    super inicializar.
     comidaConsumida := 0.
     colaObjetivos := OrderedCollection new.
     historialObjetivos := OrderedCollection new.
@@ -74,8 +75,14 @@ Reina >> ejecutarTurno: unMundo colonia: unaColonia
         (comidaConsumida = Reina comidaMax) ifTrue: [
             hormiga := self crearTrabajadora.
             comidaConsumida := 0.
+            Test bloque: [
+                (hormiga isNil) ifTrue: [
+                    Test log: 'Reina ', self id asString, ' fallo en crear hormiga'.
+                ] ifFalse: [
+                    Test log: 'Reina ', self id asString, ' creo ', hormiga asString.
+                ].
+            ].
             (hormiga isNotNil) ifTrue: [
-                Test log: hormiga.
                 unaColonia agregarHormiga: hormiga.
             ].
         ].

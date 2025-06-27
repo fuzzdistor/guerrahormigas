@@ -5,8 +5,18 @@ Object subclass: #Test
 
 Test class >> probar
 
-Test class >> log: unMensaje
+Test class >> escribirPorConsola: unMensaje
     Stdio stdout nextPutAll: unMensaje asString; lf.
+
+Test class >> escribirPorTranscript: unMensaje
+    Transcript show: unMensaje asString; cr.
+
+Test class >> log: unMensaje
+    Test escribirPorConsola: unMensaje.
+    Test escribirPorTranscript: unMensaje.
+
+Test class >> bloque: unBloque
+    unBloque value.
 
 Test class >> testRecorrido
     | e l |

@@ -20,6 +20,10 @@ Batalla class >> librarEncuentro: atk defensora: def
     a := (0 to: 99) atRandom.
     d := (0 to: 99) atRandom.
     res := (a - d) sign.
+
+    Test log: 'Encuentro entre atacante ', atk id asString, ' y defensora ', def id asString.
+    Test log: 'atacante: ', a asString, ' y defensora ', d asString.
+
     (res < 0) ifTrue: [
         atk setMuerta.
     ].
@@ -83,6 +87,7 @@ Batalla >> getBotin
     | botin | 
     botin := defensora cantidadComida.
     defensora entregarRacion: botin.
+    Test log: 'botin de batalla: ', botin asString.
     ^ botin
 
 Batalla >> getAtacante

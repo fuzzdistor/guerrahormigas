@@ -21,7 +21,7 @@ Colonia >> agregarHormiga: unaHormiga "instanciador recurso"
 
 Colonia >> limpiarHormigasMuertas
     colHormigas := colHormigas select: [ :h | 
-        (h estaMuerta) ifTrue: [ Test log: (h id) ].
+        Test bloque: [(h estaMuerta) ifTrue: [ Test log: 'Hormiga ', h asString ,' con id ', h id asString, ' murio'.]].
     h estaViva ]
 
 Colonia >> destruido

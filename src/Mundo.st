@@ -49,6 +49,15 @@ Mundo >> ejecutarTurno "turno"
 
 Mundo >> limpiarLugaresDestruidos "limpieza"
     " conservar solo los lugares que no están destruídos "
+
+    Test bloque: [ 
+        colLugares do: [ :l |
+            (l destruido) ifTrue: [
+                Test log: l asString, ' en coordenadas ', (l posicion x) asString, ', ', (l posicion y) asString, ' eliminado'.
+            ]
+        ]
+    ].
+
     colLugares := colLugares select: [ :l |
         l destruido not
         ].

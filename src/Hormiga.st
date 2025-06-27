@@ -69,6 +69,7 @@ Hormiga >> setInactiva
 
 Hormiga >> comer: unaColonia
     ((unaColonia entregarRacion: 1) = 1) ifFalse: [
+        Test log: 'Colonia fallo en entregar raciones para ', self asString, ': ', self id asString.
         self setMuerta.
     ].
 

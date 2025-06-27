@@ -11,6 +11,7 @@ Simulacion >> inicializar "incializador"
     nroTurno := 0
 
 Simulacion >> ejecutarTurno "turno"
+    Test log: '--- Inicio Turno ', nroTurno asString, ' ---'.
     mundo ejecutarTurno.
     nroTurno := nroTurno + 1
 
