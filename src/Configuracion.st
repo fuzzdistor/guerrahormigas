@@ -40,6 +40,13 @@ Configuracion class >> default
     default add: #reina_comida_max -> 3.
     ^ default
 
+Configuracion >> crear
+    ^ self new inicializar.
+
+Configuracion >> setAncho: unAncho alto: unAlto
+    self add: #ancho -> unAncho.
+    self add: #alto -> unAncho.
+
 Configuracion >> add: unPar
     data add: unPar
 

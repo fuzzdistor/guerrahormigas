@@ -3,12 +3,20 @@ Object subclass: #Simulacion
     classVariableNames: ''
     package: 'GuerraHormigas'
 
+Simulacion class >> inicializarClase
+    Hormiga inicializarClase.
+    Reina inicializarClase.
+    Exploradora inicializarClase.
+
 Simulacion class >> crear "creador de instancia"
     ^ self new inicializar
 
 Simulacion >> inicializar "incializador"
     mundo := nil.
     nroTurno := 0
+
+Simulacion >> ejecutarTurnos: n "turno"
+    (0 to: n) do: [ :_ | self ejecutarTurno. ]
 
 Simulacion >> ejecutarTurno "turno"
     Test log: '--- Inicio Turno ', nroTurno asString, ' ---'.
